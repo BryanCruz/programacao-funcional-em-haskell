@@ -38,7 +38,10 @@ encodeModified :: Eq a => [a] -> [EncodedList a]
 encodeModified [] = []
 encodeModified xs = map eval (encode xs)
   where
-    eval (a, x) = if(a == 1) then (Single x) else (Multiple a x)
+    eval (a, x) 
+      = if   (a == 1) 
+        then (Single x) 
+        else (Multiple a x)
 
 --12
 decodeModified :: [EncodedList a] -> [a]
