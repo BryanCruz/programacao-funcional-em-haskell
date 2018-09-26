@@ -31,15 +31,14 @@ pack (x:xs) = if x == w then [(x : z)] ++ (tail y) else [x] : y
 encode :: Eq a => [a] -> [(Int, a)]
 encode xs = [(length x, head x) | x <- (pack xs)]
 
---11
+
 data EncodedList a = Single a | Multiple Int a deriving (Show)
+--11
 encodeModified :: Eq a => [a] -> [EncodedList a]
-encodeModified []     = []
-encodeModified (x:xs) = result : (encodeModified (drop totalEq xs))
+encodeModified [] = []
+encodeModified xs = map eval (encode xs)
   where
-    ys      = takeWhile (==x) xs
-    totalEq = length ys
-    result  = if (totalEq > 0) then (Multiple (totalEq+1) x) else (Single x) 
+    eval (a, x) = if(a == 1) then (Single x) else (Multiple a x)
 
 --12
 decodeModified :: [EncodedList a] -> [a]
@@ -47,6 +46,14 @@ decodeModified [] = []
 decodeModified ((Single x):xs)     = x : decodeModified xs
 decodeModified ((Multiple a x):xs) = [x | _ <- [1..a]] ++ decodeModified xs
 
+--13
+encodeDirect :: Eq a => [a] -> [EncodedList a]
+encodeDirect []     = []
+encodeDirect (x:xs) = result : (encodeDirect (drop totalEq xs))
+  where
+    ys      = takeWhile (==x) xs
+    totalEq = length ys
+    result  = if (totalEq > 0) then (Multiple (totalEq+1) x) else (Single x) 
 
 --14
 dupli :: [a] -> [a]
