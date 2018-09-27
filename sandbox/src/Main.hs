@@ -1,5 +1,16 @@
 module Main where
 
+reverse' :: [a] -> [a]  
+reverse' [] = []  
+reverse' (x:xs) = reverse' xs ++ [x]  
+
+quickSort :: (Ord a) => [a] -> [a]
+quickSort []     = []
+quickSort (x:xs) = (quickSort smallers) ++ [x] ++ (quickSort greaters)
+  where
+    smallers = [y | y <- xs, y <  x]
+    greaters = [y | y <- xs, y >= x]
+
 primes = filterPrime [2..] 
   where filterPrime (p:xs) = 
           p : filterPrime [x | x <- xs, x `mod` p /= 0]
