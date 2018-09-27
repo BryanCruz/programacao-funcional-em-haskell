@@ -1,8 +1,41 @@
 module Main where
 
-result = res ++ "read*"
-  where res = "re" ++ res
+--1
+myLast :: [a] -> a
+myLast []     = error "Empty list"
+myLast [x]    = x
+myLast (_:xs) = myLast xs
 
+--2
+myButLast :: [a] -> a
+myButLast [] = error "Empty list"
+myButLast [_] = error "The list has only 1 element"
+myButLast [x,_] = x
+myButLast (_:xs) = myButLast xs
+
+--3
+elementAt :: (Ord b, Num b) => [a] -> b -> a
+elementAt []     _         = error "Empty list"
+elementAt  _     n | n < 1 = error "Index smaller than 1"
+elementAt xs     1         = head xs
+elementAt (x:xs) n         = elementAt xs (n-1)
+
+--4
+myLength :: (Num b) => [a] -> b
+myLength [] = 0
+myLength (_:xs) = 1 + myLength xs
+
+--5
+myReverse :: [a] -> [a]
+myReverse []    = []
+myReverse (x:xs) = (myReverse xs) ++ [x]
+
+--6
+isPalindrome :: Eq a => [a] -> Bool
+isPalindrome [] = True
+isPalindrome [_] = True
+    isPalindrome (x:xs) | x == last xs = isPalindrome (init xs)
+                    | otherwise    = False
 --7
 data NestedList a = Elem a | List [NestedList a]
 flatten :: NestedList a -> [a]
