@@ -1,5 +1,7 @@
 module Main where
 
+import Debug.Trace
+
 --1
 myLast :: [a] -> a
 myLast []     = error "Empty list"
@@ -34,7 +36,7 @@ myReverse (x:xs) = (myReverse xs) ++ [x]
 isPalindrome :: Eq a => [a] -> Bool
 isPalindrome [] = True
 isPalindrome [_] = True
-    isPalindrome (x:xs) | x == last xs = isPalindrome (init xs)
+isPalindrome (x:xs) | x == last xs = isPalindrome (init xs)
                     | otherwise    = False
 --7
 data NestedList a = Elem a | List [NestedList a]
@@ -161,6 +163,32 @@ removeAt n (x:xs)
   | otherwise = (fst next, x:(snd next))
   where
     next = removeAt (n-1) xs
+
+--21
+insertAt :: a -> [a] -> Int -> [a]
+insertAt a [] _ = [a]
+insertAt a (x:xs) n
+  | n <= 1    = a : x : xs
+  | otherwise = x : insertAt a xs (n-1)
+
+--20
+range :: Int -> Int -> [Int]
+range n m
+  | n > m = []
+  | otherwise       = n : (range (n+1) m)
+
+--26
+combinations :: Int -> [a] -> [[a]]
+combinations  n xs
+  | n == 0         = []
+  | n >  length xs = []
+  | n == length xs = [xs]
+combinations 1  xs = [[x] | x <- xs]
+combinations n (x:xs) = result
+  where
+    result   = withX ++ withoutX
+    withX    = [x : y | y <- (combinations (n-1) xs)] 
+    withoutX = combinations n xs
 
 
 main :: IO ()
